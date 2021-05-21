@@ -24,11 +24,12 @@ class CryptocurrencyForecast:
     """
     def __init__(self, data_path:str, max_prediction_length:int = 7, max_encoder_length: int = 30, learning_rate: float = 0.03,
                  hidden_size: int = 16, target_prediction_variable: str = "Close", batch_size:int = 32, num_workers: int = 0,
-                 gpus: Optional[int] = None, max_epochs:int = 10):
+                 gpus: Optional[int] = None, max_epochs:int = 10, model_path: Optional[str] = None):
         
         pl.seed_everything(42)
 
         self.data_path = data_path
+        self.model_path = model_path
         
         # load dataset CSV as Pandas DataFrame and convert columns to correct types
         self.data = pd.read_csv(data_path)
