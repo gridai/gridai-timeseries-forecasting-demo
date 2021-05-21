@@ -23,11 +23,17 @@ class CryptocurrencyForecast:
     [1] https://pytorch-forecasting.readthedocs.io/en/latest/tutorials/stallion.html
     """
     def __init__(self, data_path:str, max_prediction_length:int = 7, max_encoder_length: int = 30, learning_rate: float = 0.03,
-                 target_prediction_variable: str = "Close", batch_size:int = 32, num_workers: int = 0, gpus: Optional[int] = None,
-                 max_epochs:int = 10):
+                 hidden_size: int = 16, target_prediction_variable: str = "Close", batch_size:int = 32, num_workers: int = 0,
+                 gpus: Optional[int] = None, max_epochs:int = 10):
+        
+        pl.seed_everything(42)
 
         self.data_path = data_path
+        
+        # load dataset CSV as Pandas DataFrame and convert columns to correct types
         self.data = pd.read_csv(data_path)
+        self.data["Date"] = pd.to_datetime(self.data["Date"])
+        self.data["Symbol"] = self.data.Symbol.astype("category")
 
         # if user passes `gpus` parameter use it; otherwise, use the
         # `_PL_TRAINER_GPUS` environment variable automatically populated by
@@ -41,6 +47,7 @@ class CryptocurrencyForecast:
         self.num_workers = num_workers
         self.learning_rate = learning_rate
         self.max_epochs = max_epochs
+        self.hidden_size = hidden_size
 
         # used to predict a continuous variable in dataset
         self.target_prediction_variable = target_prediction_variable
@@ -48,7 +55,7 @@ class CryptocurrencyForecast:
         # configures horizon of predictions
         self.max_prediction_length = max_prediction_length
         self.max_encoder_length = max_encoder_length
-        self.training_cutoff = self.data["time_idx"].max() - max_prediction_length
+        self.training_cutoff = self.data["time_idx"].max() - self.max_prediction_length
 
     @property
     def dataset(self) -> Tuple[TimeSeriesDataSet, TimeSeriesDataSet]:
@@ -89,7 +96,7 @@ class CryptocurrencyForecast:
 
         return (train, val)
 
-    def train(self):
+    def train(self) -> None:
         """Train network using Lightning"""
         # configure network and trainer
         early_stop_callback = EarlyStopping(monitor="val_loss", min_delta=1e-4, patience=10, verbose=False, mode="min")
@@ -111,13 +118,16 @@ class CryptocurrencyForecast:
         tft = TemporalFusionTransformer.from_dataset(
             training,
             learning_rate=self.learning_rate,
-            hidden_size=16,
+            hidden_size=self.hidden_size,
             attention_head_size=1,
             dropout=0.1,
             hidden_continuous_size=8,
             output_size=7,  # 7 quantiles by default
             loss=QuantileLoss(),
-            log_interval=10,  # uncomment for learning rate finder and otherwise, e.g. to 10 for logging every 10 batches
+
+            # changing both parameters to any other values raises exceptions; that's a bug in PyTorch Forecasting
+            log_interval=0,
+            log_val_interval=0,
             reduce_on_plateau_patience=4,
         )
         print(f"Number of parameters in network: {tft.size()/1e3:.1f}k")
@@ -130,7 +140,7 @@ class CryptocurrencyForecast:
             val_dataloaders=val_dataloader,
         )
 
-    def plot_predictions(self, n:int = 10):
+    def plot_predictions(self, n:int = 10) -> None:
         """Plots predictions against the validation dataset"""
         model = TemporalFusionTransformer.load_from_checkpoint(self.model_path)
 
