@@ -151,4 +151,7 @@ class CryptocurrencyForecast:
         _, val_dataloader = self.dataloaders
         raw_predictions, x = model.predict(val_dataloader, mode="raw", return_x=True)
         for idx in range(n):
-            model.plot_prediction(x, raw_predictions, idx=idx, add_loss_to_title=True)
+            try:
+                model.plot_prediction(x, raw_predictions, idx=idx, add_loss_to_title=True)
+            except RuntimeError:
+                print("Missing certain indices. Pre-process prediction data to contain all indices.")
