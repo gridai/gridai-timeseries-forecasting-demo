@@ -1,5 +1,7 @@
 # Timeseries Forecasting
 
+[![Grid](https://img.shields.io/badge/rid_AI-run-78FF96.svg?labelColor=black&logo=data:image/svg%2bxml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgMTR2MjBhMTQgMTQgMCAwMDE0IDE0aDlWMzYuOEgxMi42VjExaDIyLjV2N2gxMS4yVjE0QTE0IDE0IDAgMDAzMi40IDBIMTVBMTQgMTQgMCAwMDEgMTR6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTM1LjIgNDhoMTEuMlYyNS41SDIzLjl2MTEuM2gxMS4zVjQ4eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==)](https://platform.grid.ai/#/runs?script=https://github.com/gridai/gridai-timeseries-forecasting-demo/blob/fa48c4b5ae58f40263ad98d5fbc06fce92db11a4/train.py&cloud=grid&instance=g4dn.xlarge&accelerators=1&disk_size=200&framework=lightning&script_args=grid%20run%20--grid_config%20.grid%2Fconfig.yml%20train.py%20--max_epochs%20100%20--data_path%20%2Fdataset%2Fcryptocurrency_prices.csv%20--learning_rate%20'uniform(0%2C0.03%2C5)'%20--hidden_size%20'%5B16%2C32%2C64%5D')
+
 We show how to create a model that learns how to forecast the next N observations of
 a timeseries.
 
@@ -46,7 +48,7 @@ You are now ready to train your model on Grid.
 
 We'll be using the CLI but you can do the same thing by using the web UI. We have placed a configuration file 
 locally (`.grid/config.yml`) that you can use as reference instead of passing all the parameters to
-the CLI manually -- or just click on Grid badge:
+the CLI manually.
 
 ```shell
 $ grid run --grid_config .grid/config.yml \
