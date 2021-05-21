@@ -38,7 +38,7 @@ class CryptocurrencyForecast:
             self.gpus = os.getenv("_PL_TRAINER_GPUS", 0)
 
         self.batch_size = batch_size
-        self.batnum_workersch_size = num_workers
+        self.num_workers = num_workers
         self.learning_rate = learning_rate
         self.max_epochs = max_epochs
 
