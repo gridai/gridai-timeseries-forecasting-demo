@@ -49,13 +49,12 @@ locally (`.grid/config.yml`) that you can use as reference instead of passing al
 the CLI manually -- or just click on Grid badge:
 
 ```shell
-$ grid run --grid_instance_type g4dn.xlarge \
-           --grid_gpus 1 \
-           --grid_datastore_name crypto_prices \
-           --grid_datastore_version 1 \
-           --grid_datastore_mount_dir /dataset \
-           train.py --max_epochs 1000 --data_path /dataset \
-                    --learning_rate 0.03
+$ grid run --grid_config .grid/config.yml \
+           train.py \
+           --max_epochs 100 \
+           --data_path /dataset/cryptocurrency_prices.csv \
+           --learning_rate "uniform(0,0.03,5)" \
+           --hidden_size "[16,32,64]"
 
 No --grid_name passed, naming your run glossy-manatee-255
 Using default cloud credentials cc-bwhth to run on AWS.
@@ -85,18 +84,19 @@ Grid AI makes it trivial to run a [hyperparameter sweep](https://docs.grid.ai/pr
 without having to change anything in your scripts. Let's experiment with a number of different learning rates for our model:
 
 ```shell
-$ grid run --grid_instance_type g4dn.xlarge \
-           --grid_gpus 1 \
-           --grid_datastore_name crypto_prices \
-           --grid_datastore_version 1 \
-           --grid_datastore_mount_dir /dataset \
-           train.py --max_epochs 1000 --data_path /dataset \
-                    --learning_rate "uniform(0,0.03,10)"
+$ grid run --grid_config .grid/config.yml \
+           train.py --max_epochs 100 \
+           --data_path /dataset/cryptocurrency_prices.csv \
+           --learning_rate "uniform(0,0.03,5)" \
+           --hidden_size "[16,32,64]"
 ```
 
-That will generate 10 experimentst with different learning rate combinations.
+That will generate 15 experimentst with different learning rate combinations.
 
 ## Attribution
+
+This project relies heavily on the [PyTorch Forecasting](https://pytorch-forecasting.readthedocs.io/en/latest/) package. The implementation herein adapts
+from their documentation and tutorials.
 
 The dataset used in this demo comes from [CoinMarketCap](https://coinmarketcap.com/), a cryptocurrency price-tracking service. We have downloaded a processed version of the data
 available in this [Kaggle page](https://www.kaggle.com/sudalairajkumar/cryptocurrencypricehistory).
