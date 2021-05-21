@@ -146,6 +146,8 @@ class CryptocurrencyForecast:
         model = TemporalFusionTransformer.load_from_checkpoint(self.model_path)
 
         # raw predictions are a dictionary from which all kind of information including quantiles can be extracted
+        # TODO: there's a bug with plot_predictions it looks like so I can't generate
+        # plots correctly.
         _, val_dataloader = self.dataloaders
         raw_predictions, x = model.predict(val_dataloader, mode="raw", return_x=True)
         for idx in range(n):
