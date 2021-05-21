@@ -1,0 +1,19 @@
+# Main compute configuration.
+compute:
+
+  # Add cloud configuration here.
+  provider:
+    credentials: cc-s96q7         # Cloud credential ID
+    region: us-east-1             # Cloud region
+    vendor: aws                   # Vendor, only aws
+
+  # Training configuration.
+  train:
+    disk_size: 200                  # Disk size
+    gpus: 1                         # Number of GPUs
+    instance: g4dn.xlarge           # AWS instance type
+    framework: "lightning"          # Which framework you would like to use
+    distributed: false              # Needs to be false
+    datastore_name: crypto_currency_prices
+    datastore_version: 1
+    datastore_mount_dir: /dataset/
