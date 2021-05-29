@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     # define CLI arguments
     parser = ArgumentParser()
-    parser.add_argument('--data_path', type=str, default=Path().cwd() / Path("/dataset/cryptocurrency_prices.csv"))
+    parser.add_argument('--data_path', type=str, default=Path().cwd() / Path("data/cryptocurrency_prices.csv"))
     parser.add_argument('--max_epochs', type=int, default=10)
     parser.add_argument('--num_workers', type=int, default=4)
     parser.add_argument('--batch_size', type=int, default=32)
