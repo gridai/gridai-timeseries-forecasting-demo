@@ -4,7 +4,7 @@ import pandas as pd
 
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import EarlyStopping, LearningRateMonitor
-from pytorch_lightning.loggers import TensorBoardLogger
+from pytorch_lightning.loggers import TensorBoardLogger, WandbLogger
 
 from typing import Tuple, Optional
 from pytorch_forecasting import TemporalFusionTransformer, TimeSeriesDataSet
@@ -102,7 +102,9 @@ class CryptocurrencyForecast:
         # configure network and trainer
         early_stop_callback = EarlyStopping(monitor="val_loss", min_delta=1e-4, patience=10, verbose=False, mode="min")
         lr_logger = LearningRateMonitor()  # log the learning rate
-        logger = TensorBoardLogger("lightning_logs")  # logging results to a tensorboard
+        tb_logger = TensorBoardLogger("lightning_logs")  # logging results to a tensorboard
+        wandb_logger = WandbLogger()
+        
 
         trainer = pl.Trainer(
             max_epochs=self.max_epochs,
@@ -112,7 +114,7 @@ class CryptocurrencyForecast:
             limit_train_batches=30,  # coment in for training, running valiation every 30 batches
             # fast_dev_run=True,  # comment in to check that networkor dataset has no serious bugs
             callbacks=[lr_logger, early_stop_callback],
-            logger=logger,
+            logger=[tb_logger, wandb_logger],
         )
 
         training, _ = self.dataset
