@@ -13,7 +13,6 @@ compute:
     gpus: 1                         # Number of GPUs
     instance: g4dn.xlarge           # AWS instance type
     framework: "lightning"          # Which framework you would like to use
-    distributed: false              # Needs to be false
     datastore_name: crypto_currency_prices
     datastore_version: 1
     datastore_mount_dir: /dataset/
