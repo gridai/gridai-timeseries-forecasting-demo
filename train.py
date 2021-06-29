@@ -14,7 +14,7 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--learning_rate', type=float, default=0.001)
     parser.add_argument('--hidden_size', type=int, default=16)
-    parser.add_argument('--gpus', type=int, default=None)
+    parser.add_argument('--gpus', type=int, default=0)
     parser.add_argument('--data_src', type=str, default="https://raw.githubusercontent.com/gridai/gridai-timeseries-forecasting-demo/main/data/cryptocurrency_prices.csv")
     args = parser.parse_args()
 
