@@ -2,3 +2,4 @@ pyarrow==4.0.0
 fastparquet==0.6.3
 numba==0.53.1
 pytorch-forecasting==0.8.5
+wget==3.2
