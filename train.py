@@ -21,7 +21,7 @@ if __name__ == '__main__':
     # download if data is not prepared
     if not Path(args.data_path).is_file():
         filename = wget.download(args.data_src)
-        args.data_path=os.getcwd() + "/" + filename
+        args.data_path=Path().cwd() / Path(filename)
     
     formatter_class=ArgumentDefaultsHelpFormatter
 
