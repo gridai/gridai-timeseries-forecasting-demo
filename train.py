@@ -19,7 +19,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # download if data is not prepared
-    if not(os.path.isfile(args.data_path)):
+    if not Path(args.data_path).is_file():
         filename = wget.download(args.data_src)
         args.data_path=os.getcwd() + "/" + filename
     
